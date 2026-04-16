@@ -34,6 +34,8 @@ from .sql import (
     INSERT_UNIT_PROJECT_SQL,
 )
 
+RESOURCE_USAGE_BATCH_SIZE = 2000
+
 
 def insert_resource_summaries(cursor: Any, root: ET.Element, batch_id: int) -> dict[str, int]:
     ordered_unique_ids, rows = collect_resource_summaries(root, batch_id)
@@ -51,6 +53,15 @@ def insert_resource_summaries(cursor: Any, root: ET.Element, batch_id: int) -> d
     return resource_map
 
 
+def flush_resource_usages(cursor: Any, rows: list[tuple[Any, ...]]) -> int:
+    if not rows:
+        return 0
+    executemany_insert(cursor, INSERT_RESOURCE_USAGE_SQL, rows)
+    inserted_count = len(rows)
+    rows.clear()
+    return inserted_count
+
+
 def import_xml_file(file_path: Path) -> tuple[str, ImportStats]:
     started_at = perf_counter()
     batch_no = build_batch_no(file_path)
@@ -63,6 +74,7 @@ def import_xml_file(file_path: Path) -> tuple[str, ImportStats]:
                 batch_id = insert_row(cursor, INSERT_IMPORT_BATCH_SQL, build_batch_row(root, file_path, batch_no))
                 resource_summary_map = insert_resource_summaries(cursor, root, batch_id)
                 stats.resource_summaries = len(resource_summary_map)
+                resource_usage_buffer: list[tuple[Any, ...]] = []
 
                 for single_project_element in root.findall("单项工程基本信息表"):
                     single_project_id = insert_row(
@@ -119,7 +131,6 @@ def import_xml_file(file_path: Path) -> tuple[str, ImportStats]:
                                     )
                                     stats.quotas += 1
 
-                                    usage_rows: list[tuple[Any, ...]] = []
                                     for usage_element in quota_element.findall("工料机含量表"):
                                         xml_resource_id = text_value(usage_element.attrib.get("汇总材料ID"), 64)
                                         if not xml_resource_id:
@@ -127,7 +138,7 @@ def import_xml_file(file_path: Path) -> tuple[str, ImportStats]:
                                         resource_summary_id = resource_summary_map.get(xml_resource_id)
                                         if resource_summary_id is None:
                                             continue
-                                        usage_rows.append(
+                                        resource_usage_buffer.append(
                                             (
                                                 quota_id,
                                                 resource_summary_id,
@@ -138,8 +149,13 @@ def import_xml_file(file_path: Path) -> tuple[str, ImportStats]:
                                                 ),
                                             )
                                         )
-                                    executemany_insert(cursor, INSERT_RESOURCE_USAGE_SQL, usage_rows)
-                                    stats.resource_usages += len(usage_rows)
+                                        if len(resource_usage_buffer) >= RESOURCE_USAGE_BATCH_SIZE:
+                                            stats.resource_usages += flush_resource_usages(
+                                                cursor,
+                                                resource_usage_buffer,
+                                            )
+
+                stats.resource_usages += flush_resource_usages(cursor, resource_usage_buffer)
 
             connection.commit()
         except Exception:

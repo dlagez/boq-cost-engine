@@ -39,6 +39,12 @@ python src/main.py "data/中南科研设计中心建设项目.xml"
 python src/delete_batch.py "your-batch-no"
 ```
 
+7. Clear all imported data but keep the schema:
+
+```bash
+python src/clear_db.py
+```
+
 ## Structure
 
 - `src/main.py`: entry point
@@ -47,3 +53,4 @@ python src/delete_batch.py "your-batch-no"
 - `src/init_db.py`: creates the database schema
 - `src/xml_importer_lib/`: imports XML data into MySQL
 - `src/delete_batch.py`: deletes imported data by batch number
+- `src/clear_db.py`: clears all imported data and keeps the schema

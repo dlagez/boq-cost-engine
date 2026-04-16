@@ -43,8 +43,7 @@ CREATE TABLE IF NOT EXISTS cost_single_project (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     is_deleted TINYINT(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-    UNIQUE KEY uk_batch_seq_no (batch_id, seq_no),
-    KEY idx_batch_id (batch_id)
+    UNIQUE KEY uk_batch_seq_no (batch_id, seq_no)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='单项工程基本信息表';
 
 CREATE TABLE IF NOT EXISTS cost_single_project_profile (
@@ -56,8 +55,7 @@ CREATE TABLE IF NOT EXISTS cost_single_project_profile (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     is_deleted TINYINT(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-    UNIQUE KEY uk_single_profile (single_project_id, attr_name),
-    KEY idx_single_project_id (single_project_id)
+    UNIQUE KEY uk_single_profile (single_project_id, attr_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='单项工程概况信息表';
 
 CREATE TABLE IF NOT EXISTS cost_single_project_extra (
@@ -69,8 +67,7 @@ CREATE TABLE IF NOT EXISTS cost_single_project_extra (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     is_deleted TINYINT(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-    UNIQUE KEY uk_single_extra (single_project_id, attr_name),
-    KEY idx_single_project_id (single_project_id)
+    UNIQUE KEY uk_single_extra (single_project_id, attr_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='单项工程附加信息表';
 
 CREATE TABLE IF NOT EXISTS cost_unit_project (
@@ -104,8 +101,7 @@ CREATE TABLE IF NOT EXISTS cost_unit_project (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     is_deleted TINYINT(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-    UNIQUE KEY uk_single_unit_code (single_project_id, unit_project_code),
-    KEY idx_single_project_id (single_project_id)
+    UNIQUE KEY uk_single_unit_code (single_project_id, unit_project_code)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='单位工程基本信息表';
 
 CREATE TABLE IF NOT EXISTS cost_unit_project_extra (
@@ -117,8 +113,7 @@ CREATE TABLE IF NOT EXISTS cost_unit_project_extra (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     is_deleted TINYINT(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-    UNIQUE KEY uk_unit_extra (unit_project_id, attr_name),
-    KEY idx_unit_project_id (unit_project_id)
+    UNIQUE KEY uk_unit_extra (unit_project_id, attr_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='单位工程附加信息表';
 
 CREATE TABLE IF NOT EXISTS cost_division (
@@ -132,8 +127,7 @@ CREATE TABLE IF NOT EXISTS cost_division (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     is_deleted TINYINT(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-    UNIQUE KEY uk_unit_division_code (unit_project_id, division_code),
-    KEY idx_unit_project_id (unit_project_id)
+    UNIQUE KEY uk_unit_division_code (unit_project_id, division_code)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='分部分项信息表';
 
 CREATE TABLE IF NOT EXISTS cost_boq_item (
@@ -176,9 +170,7 @@ CREATE TABLE IF NOT EXISTS cost_boq_item (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     is_deleted TINYINT(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-    UNIQUE KEY uk_division_seq_no (division_id, seq_no),
-    KEY idx_division_id (division_id),
-    KEY idx_item_code (item_code)
+    UNIQUE KEY uk_division_seq_no (division_id, seq_no)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='分部分项工程量清单与计价表';
 
 CREATE TABLE IF NOT EXISTS cost_boq_item_quota (
@@ -217,9 +209,7 @@ CREATE TABLE IF NOT EXISTS cost_boq_item_quota (
     remark VARCHAR(500) DEFAULT NULL COMMENT '备注',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    is_deleted TINYINT(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-    KEY idx_boq_item_id (boq_item_id),
-    KEY idx_quota_code (quota_code)
+    is_deleted TINYINT(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='分部分项工程量清单项目子目组价表';
 
 CREATE TABLE IF NOT EXISTS cost_resource_summary (
@@ -233,9 +223,7 @@ CREATE TABLE IF NOT EXISTS cost_resource_summary (
     remark VARCHAR(500) DEFAULT NULL COMMENT '备注',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    is_deleted TINYINT(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-    KEY idx_batch_id (batch_id),
-    KEY idx_resource_code (resource_code)
+    is_deleted TINYINT(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='工料机汇总表';
 
 CREATE TABLE IF NOT EXISTS cost_quota_resource_usage (
@@ -246,7 +234,5 @@ CREATE TABLE IF NOT EXISTS cost_quota_resource_usage (
     consumption_adjust_coef DECIMAL(18,6) NOT NULL DEFAULT 1 COMMENT '消耗量定额含量调整系数',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    is_deleted TINYINT(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-    KEY idx_quota_id (quota_id),
-    KEY idx_resource_summary_id (resource_summary_id)
+    is_deleted TINYINT(1) NOT NULL DEFAULT 0 COMMENT '逻辑删除'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='工料机含量表';
