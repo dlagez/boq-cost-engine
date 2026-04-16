@@ -15,6 +15,7 @@ class ImportStats:
     quotas: int = 0
     resource_summaries: int = 0
     resource_usages: int = 0
+    elapsed_seconds: float = 0.0
 
 
 SINGLE_PROJECT_PROFILE_FIELDS = (

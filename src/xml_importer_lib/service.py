@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from time import perf_counter
 from typing import Any
 import xml.etree.ElementTree as ET
 
@@ -51,6 +52,7 @@ def insert_resource_summaries(cursor: Any, root: ET.Element, batch_id: int) -> d
 
 
 def import_xml_file(file_path: Path) -> tuple[str, ImportStats]:
+    started_at = perf_counter()
     batch_no = build_batch_no(file_path)
     stats = ImportStats()
     root = ET.parse(file_path).getroot()
@@ -144,4 +146,5 @@ def import_xml_file(file_path: Path) -> tuple[str, ImportStats]:
             connection.rollback()
             raise
 
+    stats.elapsed_seconds = perf_counter() - started_at
     return batch_no, stats

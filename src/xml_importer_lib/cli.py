@@ -21,7 +21,8 @@ def main() -> None:
         "single_projects={single_projects}, profiles={single_project_profiles}, "
         "unit_projects={unit_projects}, unit_extras={unit_project_extras}, "
         "divisions={divisions}, boq_items={boq_items}, quotas={quotas}, "
-        "resource_summaries={resource_summaries}, resource_usages={resource_usages}".format(
+        "resource_summaries={resource_summaries}, resource_usages={resource_usages}, "
+        "elapsed_seconds={elapsed_seconds:.2f}".format(
             **asdict(stats)
         )
     )
