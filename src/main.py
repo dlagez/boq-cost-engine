@@ -7,7 +7,7 @@ from pathlib import Path
 from pymysql import MySQLError
 
 from db import create_connection
-from xml_importer import import_xml_file
+from xml_importer_lib import import_xml_file
 
 
 def main() -> None:
