@@ -27,8 +27,16 @@ cp .env.example .env
 python src/main.py
 ```
 
+5. Import XML data into MySQL:
+
+```bash
+python src/main.py "data/中南科研设计中心建设项目.xml"
+```
+
 ## Structure
 
 - `src/main.py`: entry point
 - `src/config.py`: reads database configuration from environment variables
 - `src/db.py`: creates a MySQL connection
+- `src/init_db.py`: creates the database schema
+- `src/xml_importer.py`: imports XML data into MySQL
